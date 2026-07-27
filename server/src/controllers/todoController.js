@@ -76,4 +76,29 @@ const getTodoById = async (req, res) => {
     }
 };
 
-export { createTodo, getTodo, getTodoById };
+const updateTodoById = async (req, res) => {
+    try {
+        const updateById = await Todo.findByIdAndUpdate(req.params.id, req.body, { 
+            new: true,
+            runValidators: true
+        });
+        if(!updateById) {
+            return res.status(404).json({
+                success: false,
+                message: "list is not found"        })
+        }
+        return res.status(200).json({
+            success: true,
+            message: "list update succesfully",
+            data: updateById
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "server error",
+            error: error.message
+        })
+    }
+}
+
+export { createTodo, getTodo, getTodoById, updateTodoById };
