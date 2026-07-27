@@ -8,13 +8,13 @@ const createTodo = async (req, res) => {
         if(!title) {
             return res.status(400).json({
                 success: false,
-                message: 'title is missing' 
+                message: 'title is required' 
             });
         }
         const newTodo = await Todo.create({title, description});
         return res.status(201).json({
             success: true,
-            message: 'todo create succesfully',
+            message: 'todo created successfully',
             data: newTodo
         });
     } catch(error) {
@@ -38,7 +38,7 @@ const getTodo = async (req, res) => {
     } catch(error) {
         return res.status(500).json({
             success: false,
-            message : "server error, could not fetch list",
+            message : "server error, could not fetch todos",
             error : error.message 
         });
     }
@@ -49,56 +49,101 @@ const getTodo = async (req, res) => {
 
 const getTodoById = async (req, res) => {
     try {
-        const todoByid = await Todo.findById(req.params.id);
-        if(!todoByid) {
+        const todoById = await Todo.findById(req.params.id);
+        if(!todoById) {
             return res.status(404).json({
                 success: false,
-                message: "id is not defined"
+                message: "todo not found"
             });
         }
         return res.status(200).json({
             success: true,
             message: "todo fetched successfully",
-            data: todoByid
+            data: todoById
         });
     } catch(error) {
         if (error.name === 'CastError') {
-        return res.status(400).json({
+            return res.status(400).json({
+                success: false,
+                message: "invalid id format"
+            });
+        }
+        return res.status(500).json({
             success: false,
-            message: "invalid id format"
+            message: "server error",
+            error: error.message
         });
-    }
-    return res.status(500).json({
-        success: false,
-        message: "server error",
-        error: error.message
-    });
     }
 };
 
 const updateTodoById = async (req, res) => {
     try {
-        const updateById = await Todo.findByIdAndUpdate(req.params.id, req.body, { 
+        const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, req.body, { 
             new: true,
             runValidators: true
         });
-        if(!updateById) {
+
+        if(!updatedTodo) {
             return res.status(404).json({
                 success: false,
-                message: "list is not found"        })
+                message: "todo not found"
+            });
         }
+
         return res.status(200).json({
             success: true,
-            message: "list update succesfully",
-            data: updateById
-        })
+            message: "todo updated successfully",
+            data: updatedTodo
+        });
     } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                success: false,
+                message: "invalid id format"
+            });
+        }
+
         return res.status(500).json({
             success: false,
             message: "server error",
             error: error.message
-        })
+        });
     }
 }
 
-export { createTodo, getTodo, getTodoById, updateTodoById };
+// deleting the task from list
+
+const deleteById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedTodo = await Todo.findByIdAndDelete(id);
+
+        if (!deletedTodo) {
+            return res.status(404).json({
+                success: false,
+                message: "todo not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "todo deleted successfully"
+        });
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                success: false,
+                message: "invalid id format"
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "server error",
+            error: error.message
+        });
+    }
+}
+
+export { createTodo, getTodo, getTodoById, updateTodoById, deleteById };
