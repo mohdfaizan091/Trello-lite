@@ -5,7 +5,8 @@ const app = express();
 import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './src/services/db.js';
-import todoRouter from './src/routes/todoRoutes.js';
+import todoRoutes from './src/routes/todoRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
 
 
 dotenv.config();
@@ -18,7 +19,8 @@ connectDB();
 
 
 //routes 
-app.use('/api', todoRouter);
+app.use('/api', todoRoutes);
+app.use('/api', userRoutes);
 
 export default app;
 
