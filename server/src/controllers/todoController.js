@@ -97,17 +97,19 @@ const updateTodoById = async (req, res) => {
         });
     } catch (error) {
         if (error.name === 'CastError') {
-            return res.status(400).json({
+            return res.status(400).json({ 
                 success: false,
-                message: "invalid id format"
+                message: "invalid id format" });
+        }
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ 
+                success: false, 
+                message: error.message 
             });
         }
-
-        return res.status(500).json({
-            success: false,
-            message: "server error",
-            error: error.message
-        });
+    return res.status(500).json({ 
+        success: false, 
+        message: "server error", error: error.message });
     }
 }
 
