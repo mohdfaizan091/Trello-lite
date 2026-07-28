@@ -13,6 +13,13 @@ const userSignup = async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
+
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill all required fields"
+            });
+        }
         // check user already exist
         const exist = await userModel.findOne({ email });
 
@@ -20,13 +27,6 @@ const userSignup = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "User already exists"
-            });
-        }
-
-        if (!name || !email || !password) {
-            return res.status(400).json({
-                success: false,
-                message: "Please fill all required fields"
             });
         }
 
