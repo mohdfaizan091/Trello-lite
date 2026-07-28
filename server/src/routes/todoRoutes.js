@@ -1,12 +1,13 @@
 import express from 'express';
 const router = express.Router();
-import {createTodo, getTodo, getTodoById, updateTodoById, deleteById} from '../controllers/todoController.js'; 
+import {createTodo, getTodo, getTodoById, updateTodoById, deleteById} from '../controllers/todoController.js';
+import  requireAuth  from "../middlewares/auth.js"; 
 
-router.post('/tasks', createTodo);
-router.get('/tasks', getTodo);
-router.get('/tasks/:id', getTodoById);
-router.put('/tasks/:id', updateTodoById);
-router.delete('/tasks/:id', deleteById);
+router.post('/tasks', requireAuth, createTodo);
+router.get('/tasks', requireAuth, getTodo);
+router.get('/tasks/:id', requireAuth, getTodoById);
+router.put('/tasks/:id', requireAuth, updateTodoById);
+router.delete('/tasks/:id', requireAuth, deleteById);
 
 
 export default router;
