@@ -15,13 +15,21 @@ function App() {
         }
     }, []);
 
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+    };
+
     return (
       
         <div>
           
             <Header title="My TaskBoard" />
             {isLoggedIn ? (
-                <TaskList />
+                 <>
+                    <TaskList />
+                    <button onClick={handleLogout}>Logout</button>
+                </>
               ) : showLogin ? (
                 <>
                   <Login onSuccess={() => setIsLoggedIn(true)} />

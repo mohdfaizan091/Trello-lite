@@ -18,6 +18,10 @@ function TaskList() {
         setTasks([...tasks, newTask]);
     };
 
+    const handleDelete = (deletedId) => {
+        setTasks(tasks.filter(task => task._id !== deletedId));
+    };
+
     return (
         <div>
             <CreateTask onTaskCreated={handleTaskCreated} />
@@ -27,9 +31,11 @@ function TaskList() {
                 tasks.map(task => (
                     <TaskItem
                         key={task._id}
+                        id={task._id}
                         title={task.title}
                         description={task.description}
                         status={task.status}
+                        onDelete={handleDelete}
                     />
                 ))
             )}
