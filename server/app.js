@@ -12,6 +12,7 @@ import userRoutes from './src/routes/userRoutes.js';
 dotenv.config();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // batabase  connection

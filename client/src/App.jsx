@@ -1,12 +1,12 @@
 import './App.css'
 import Header from './Header';
-import TaskList from './TaskList.jsx';
+import Signup from './Signup.jsx';
 
 function App() {
   return (
     <>
       <Header title="My-Taskboard" />
-      <TaskList />
+      <Signup />
     </>
   );
 }
