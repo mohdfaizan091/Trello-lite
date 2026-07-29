@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import TaskItem from './TaskItem.jsx';
 
 function TaskList() {
     const [tasks, setTasks] = useState([]);
@@ -12,7 +13,12 @@ function TaskList() {
     return (
         <div>
             {tasks.map(task => (
-                <p key ={task._id}>{task.title}</p>
+                <TaskItem
+                    key={task._id}
+                    title={task.title}
+                    description={task.description}
+                    status={task.status}
+                />
             ))}
         </div>
     );
