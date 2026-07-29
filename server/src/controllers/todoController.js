@@ -14,8 +14,7 @@ const createTodo = async (req, res) => {
 
         const newTodo = await Todo.create({
             title,
-            description,
-            user: req.user.id
+            description
         });
 
         return res.status(201).json({
@@ -36,7 +35,7 @@ const createTodo = async (req, res) => {
 // get all the task
 const getTodo = async (req, res) => {
     try {
-        const todos = await Todo.find({ user: req.user.id });
+        const todos = await Todo.find();
 
         return res.status(200).json({
             success: true,
@@ -56,10 +55,7 @@ const getTodo = async (req, res) => {
 // get single todo
 const getTodoById = async (req, res) => {
     try {
-        const todoById = await Todo.findOne({
-            _id: req.params.id,
-            user: req.user.id
-        });
+        const todoById = await Todo.findById(req.params.id);
 
         if (!todoById) {
             return res.status(404).json({
@@ -93,11 +89,8 @@ const getTodoById = async (req, res) => {
 // update todo
 const updateTodoById = async (req, res) => {
     try {
-        const updatedTodo = await Todo.findOneAndUpdate(
-            {
-                _id: req.params.id,
-                user: req.user.id
-            },
+        const updatedTodo = await Todo.findByIdAndUpdate(
+            req.params.id,
             req.body,
             {
                 new: true,
@@ -146,10 +139,7 @@ const deleteById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const deletedTodo = await Todo.findOneAndDelete({
-            _id: id,
-            user: req.user.id
-        });
+        const deletedTodo = await Todo.findByIdAndDelete(id);
 
         if (!deletedTodo) {
             return res.status(404).json({
