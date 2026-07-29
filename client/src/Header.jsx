@@ -1,7 +1,7 @@
-function Header() {
+function Header(props) {
     return (
         <div>
-            <h1>My Taskboard</h1>
+            <h1>{props.title}</h1>
         </div>
     );
 }
